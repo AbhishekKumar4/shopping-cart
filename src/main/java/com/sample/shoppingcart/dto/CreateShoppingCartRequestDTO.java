@@ -3,13 +3,21 @@ package com.sample.shoppingcart.dto;
 import java.time.Instant;
 import java.util.List;
 
-public class ShoppingCartDTO {
+public class CreateShoppingCartRequestDTO {
     private Long id;
     private String countryCode;
     private String currency;
-    private Instant created;
-    private Instant updated;
+    private Instant created = Instant.now();
+    private Instant updated = Instant.now();
     private List<ProductDTO> products;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCountryCode() {
         return countryCode;
