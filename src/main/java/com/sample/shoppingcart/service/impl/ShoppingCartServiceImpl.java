@@ -53,8 +53,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if(shoppingCartOptional.isPresent()) {
             ShoppingCart shoppingCartEntity = shoppingCartOptional.get();
             Set<Product> productSet = shoppingCartEntity.getProducts();
-            // Save the product
+            // Check if product already exists
             Product product = ProductMapper.INSTANCE.map(productDTO);
+            Optional<Product> productEntityOptional = productRepository.findById(productDTO.getId());
+            if(productEntityOptional.isPresent()) {
+                Product productEntity = productEntityOptional.get();
+                product.setCreated(productEntity.getCreated());
+            }
+            // Save the product
             Product savedProduct = productRepository.save(product);
             productSet.add(savedProduct);
             shoppingCartRepository.save(shoppingCartEntity);
