@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/api/carts")
+@RequestMapping("/api/carts")
 public class ShoppingCartController {
 
     private final ShoppingCartService shoppingCartService;
@@ -40,21 +40,21 @@ public class ShoppingCartController {
     }
 
     @PutMapping("/{cartId}/products")
-    public ResponseEntity addProduct(@PathVariable final Long cartId,
+    public ResponseEntity<ProductDTO> addProduct(@PathVariable final Long cartId,
                                      @RequestBody final ProductDTO productDto) {
         ProductDTO addedProduct = shoppingCartService.addProduct(cartId, productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedProduct);
     }
 
     @GetMapping("/{cartId}/products/{productId}")
-    public ResponseEntity getProduct(@PathVariable final Long cartId,
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable final Long cartId,
                                      @PathVariable final UUID productId) {
         ProductDTO productDto = shoppingCartService.getProduct(cartId, productId);
         return ResponseEntity.ok(productDto);
     }
 
     @DeleteMapping("/{cartId}/products/{productId}")
-    public ResponseEntity deleteProduct(@PathVariable final Long cartId,
+    public ResponseEntity<ProductDTO> deleteProduct(@PathVariable final Long cartId,
                                      @PathVariable final UUID productId) {
         ProductDTO deletedProduct = shoppingCartService.deleteProduct(cartId, productId);
         return ResponseEntity.ok(deletedProduct);

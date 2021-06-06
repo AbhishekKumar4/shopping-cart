@@ -43,7 +43,32 @@ public class ShoppingCartControllerTest {
         Assertions.assertEquals(response.getStatusCodeValue(), 200);
     }
 
-    private ShoppingCartDTO createShoppingCartDto() {
+    @Test
+    public void addProductTest() {
+        ProductDTO productDto = createProductDto();
+        Long cartId = 1L;
+        Mockito.when(shoppingCartService.addProduct(Mockito.anyLong(), Mockito.any(ProductDTO.class))).thenReturn(productDto);
+        ResponseEntity<ProductDTO> response =  shoppingCartController.addProduct(1L, productDto);
+        Assertions.assertEquals(response.getStatusCodeValue(), 201);
+    }
+
+    @Test
+    public void getProductTest() {
+        ProductDTO productDto = createProductDto();
+        Mockito.when(shoppingCartService.getProduct(Mockito.anyLong(), Mockito.any(UUID.class))).thenReturn(productDto);
+        ResponseEntity<ProductDTO> response =  shoppingCartController.getProduct(1L, UUID.randomUUID());
+        Assertions.assertEquals(response.getStatusCodeValue(), 200);
+    }
+
+    @Test
+    public void deleteProductTest() {
+        ProductDTO productDto = createProductDto();
+        Mockito.when(shoppingCartService.deleteProduct(Mockito.anyLong(), Mockito.any(UUID.class))).thenReturn(productDto);
+        ResponseEntity<ProductDTO> response =  shoppingCartController.deleteProduct(1L, UUID.randomUUID());
+        Assertions.assertEquals(response.getStatusCodeValue(), 200);
+    }
+
+    private static ShoppingCartDTO createShoppingCartDto() {
         ShoppingCartDTO shoppingCartDto = new ShoppingCartDTO();
         shoppingCartDto.setId(1L);
         shoppingCartDto.setCountryCode("IN");
@@ -58,5 +83,12 @@ public class ShoppingCartControllerTest {
 
         shoppingCartDto.setProducts(set);
         return shoppingCartDto;
+    }
+
+    private static ProductDTO createProductDto() {
+        ProductDTO productDto = new ProductDTO();
+        productDto.setDescription("Product Desc");
+        productDto.setCategory("Category");
+        return productDto;
     }
 }
