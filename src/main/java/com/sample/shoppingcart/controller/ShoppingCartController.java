@@ -1,6 +1,5 @@
 package com.sample.shoppingcart.controller;
 
-import com.sample.shoppingcart.dto.CreateShoppingCartRequestDTO;
 import com.sample.shoppingcart.dto.ProductDTO;
 import com.sample.shoppingcart.dto.ShoppingCartDTO;
 import com.sample.shoppingcart.service.ShoppingCartService;
@@ -29,8 +28,8 @@ public class ShoppingCartController {
     }
 
     @PostMapping
-    public ResponseEntity<ShoppingCartDTO> createShoppingCart(@RequestBody CreateShoppingCartRequestDTO createShoppingCartRequestDTO) {
-        ShoppingCartDTO shoppingCartCreated = shoppingCartService.createShoppingCart(createShoppingCartRequestDTO);
+    public ResponseEntity<ShoppingCartDTO> createShoppingCart(@RequestBody ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCartDTO shoppingCartCreated = shoppingCartService.createShoppingCart(shoppingCartDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCartCreated);
     }
 

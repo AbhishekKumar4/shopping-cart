@@ -7,8 +7,8 @@ public class ShoppingCartDTO {
     private Long id;
     private String countryCode;
     private String currency;
-    private Instant created;
-    private Instant updated;
+    private Instant created = Instant.now();
+    private Instant updated = Instant.now();
     private List<ProductDTO> products;
 
     public String getCountryCode() {

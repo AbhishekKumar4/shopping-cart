@@ -1,6 +1,5 @@
 package com.sample.shoppingcart.service.impl;
 
-import com.sample.shoppingcart.dto.CreateShoppingCartRequestDTO;
 import com.sample.shoppingcart.dto.ProductDTO;
 import com.sample.shoppingcart.dto.ShoppingCartDTO;
 import com.sample.shoppingcart.entity.Product;
@@ -30,8 +29,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDTO createShoppingCart(CreateShoppingCartRequestDTO createShoppingCartRequestDTO) {
-        ShoppingCart shoppingCartEntity = ShoppingCartMapper.INSTANCE.map(createShoppingCartRequestDTO);
+    public ShoppingCartDTO createShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCart shoppingCartEntity = ShoppingCartMapper.INSTANCE.map(shoppingCartDTO);
         Set<Product> productSet = shoppingCartEntity.getProducts();
         productSet.forEach(productRepository::save);
         ShoppingCart savedEntity = shoppingCartRepository.save(shoppingCartEntity);
@@ -60,7 +59,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             productSet.add(savedProduct);
             shoppingCartRepository.save(shoppingCartEntity);
             log.info("Shopping cart updated!!!!");
-            //return ShoppingCartMapper.INSTANCE.map(shoppingCartOptional.get());
         } else {
             throw new RuntimeException("Shopping Cart Doesn't Exists!!!");
         }
