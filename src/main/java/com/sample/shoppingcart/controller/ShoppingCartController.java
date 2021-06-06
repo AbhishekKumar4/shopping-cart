@@ -28,29 +28,29 @@ public class ShoppingCartController {
     }
 
     @PostMapping
-    public ResponseEntity<ShoppingCartDTO> createShoppingCart(@RequestBody ShoppingCartDTO shoppingCartDTO) {
-        ShoppingCartDTO shoppingCartCreated = shoppingCartService.createShoppingCart(shoppingCartDTO);
+    public ResponseEntity<ShoppingCartDTO> createShoppingCart(@RequestBody final ShoppingCartDTO shoppingCartDto) {
+        ShoppingCartDTO shoppingCartCreated = shoppingCartService.createShoppingCart(shoppingCartDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCartCreated);
     }
 
-    @GetMapping(value = "/{cartId}")
+    @GetMapping("/{cartId}")
     public ResponseEntity<ShoppingCartDTO> getShoppingCart(@PathVariable final Long cartId) {
-        ShoppingCartDTO shoppingCartDTO = shoppingCartService.getShoppingCart(cartId);
-        return ResponseEntity.ok(shoppingCartDTO);
+        ShoppingCartDTO shoppingCartDto = shoppingCartService.getShoppingCart(cartId);
+        return ResponseEntity.ok(shoppingCartDto);
     }
 
     @PutMapping("/{cartId}/products")
     public ResponseEntity addProduct(@PathVariable final Long cartId,
-                                     @RequestBody ProductDTO productDTO) {
-        ProductDTO addedProduct = shoppingCartService.addProduct(cartId, productDTO);
+                                     @RequestBody final ProductDTO productDto) {
+        ProductDTO addedProduct = shoppingCartService.addProduct(cartId, productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedProduct);
     }
 
     @GetMapping("/{cartId}/products/{productId}")
     public ResponseEntity getProduct(@PathVariable final Long cartId,
                                      @PathVariable final UUID productId) {
-        ProductDTO productDTO = shoppingCartService.getProduct(cartId, productId);
-        return ResponseEntity.ok(productDTO);
+        ProductDTO productDto = shoppingCartService.getProduct(cartId, productId);
+        return ResponseEntity.ok(productDto);
     }
 
     @DeleteMapping("/{cartId}/products/{productId}")

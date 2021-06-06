@@ -1,7 +1,7 @@
 package com.sample.shoppingcart.dto;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 public class ShoppingCartDTO {
     private Long id;
@@ -9,7 +9,11 @@ public class ShoppingCartDTO {
     private String currency;
     private Instant created = Instant.now();
     private Instant updated = Instant.now();
-    private List<ProductDTO> products;
+    private Set<ProductDTO> products;
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public String getCountryCode() {
         return countryCode;
@@ -43,11 +47,11 @@ public class ShoppingCartDTO {
         this.updated = updated;
     }
 
-    public List<ProductDTO> getProducts() {
+    public Set<ProductDTO> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductDTO> products) {
+    public void setProducts(Set<ProductDTO> products) {
         this.products = products;
     }
 }
