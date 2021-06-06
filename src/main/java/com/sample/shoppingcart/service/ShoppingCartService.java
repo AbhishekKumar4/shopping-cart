@@ -7,11 +7,11 @@ import java.util.UUID;
 
 public interface ShoppingCartService {
 
-    ShoppingCartDTO createShoppingCart(ShoppingCartDTO shoppingCartDTO);
+    ShoppingCartDTO createShoppingCart(final ShoppingCartDTO shoppingCartDto);
 
-    ShoppingCartDTO getShoppingCart(Long cartId);
+    ShoppingCartDTO getShoppingCart(final Long cartId);
 
-    ProductDTO addProduct(final Long cartId, ProductDTO productDTO);
+    ProductDTO addProduct(final Long cartId, ProductDTO productDto);
 
     ProductDTO getProduct(Long cartId, final UUID productId);
 

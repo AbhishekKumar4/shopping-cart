@@ -29,8 +29,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDTO createShoppingCart(ShoppingCartDTO shoppingCartDTO) {
-        ShoppingCart shoppingCartEntity = ShoppingCartMapper.INSTANCE.map(shoppingCartDTO);
+    public ShoppingCartDTO createShoppingCart(final ShoppingCartDTO shoppingCartDto) {
+        ShoppingCart shoppingCartEntity = ShoppingCartMapper.INSTANCE.map(shoppingCartDto);
         Set<Product> productSet = shoppingCartEntity.getProducts();
         productSet.forEach(productRepository::save);
         ShoppingCart savedEntity = shoppingCartRepository.save(shoppingCartEntity);
@@ -42,20 +42,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(cartId);
         if(shoppingCartOptional.isPresent()) {
             return ShoppingCartMapper.INSTANCE.map(shoppingCartOptional.get());
-        } else {
-            throw new RuntimeException("Shopping Cart Doesn't Exists!!!");
         }
+        throw new RuntimeException("Shopping Cart Doesn't Exists!!!");
     }
 
     @Override
-    public ProductDTO addProduct(Long cartId, ProductDTO productDTO) {
+    public ProductDTO addProduct(Long cartId, ProductDTO productDto) {
         Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(cartId);
         if(shoppingCartOptional.isPresent()) {
             ShoppingCart shoppingCartEntity = shoppingCartOptional.get();
             Set<Product> productSet = shoppingCartEntity.getProducts();
             // Check if product already exists
-            Product product = ProductMapper.INSTANCE.map(productDTO);
-            Optional<Product> productEntityOptional = productRepository.findById(productDTO.getId());
+            Product product = ProductMapper.INSTANCE.map(productDto);
+            Optional<Product> productEntityOptional = productRepository.findById(productDto.getId());
             if(productEntityOptional.isPresent()) {
                 Product productEntity = productEntityOptional.get();
                 product.setCreated(productEntity.getCreated());
@@ -68,7 +67,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         } else {
             throw new RuntimeException("Shopping Cart Doesn't Exists!!!");
         }
-        return productDTO;
+        return productDto;
     }
 
     @Override
@@ -98,7 +97,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 Product matchedProduct = matchingObject.get();
                 productSet.remove(matchedProduct);
                 shoppingCart.setProducts(productSet);
-                // delete relation
+                // delete relation with cart
                 shoppingCartRepository.save(shoppingCart);
                 // delete product
                 productRepository.deleteById(matchedProduct.getId());
