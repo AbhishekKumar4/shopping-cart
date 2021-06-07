@@ -4,6 +4,8 @@ import com.sample.shoppingcart.dto.ProductDTO;
 import com.sample.shoppingcart.dto.ShoppingCartDTO;
 import com.sample.shoppingcart.entity.Product;
 import com.sample.shoppingcart.entity.ShoppingCart;
+import com.sample.shoppingcart.exception.ProductNotFoundException;
+import com.sample.shoppingcart.exception.ShoppingCartNotFoundException;
 import com.sample.shoppingcart.mapper.ProductMapper;
 import com.sample.shoppingcart.mapper.ShoppingCartMapper;
 import com.sample.shoppingcart.repository.ProductRepository;
@@ -43,7 +45,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if(shoppingCartOptional.isPresent()) {
             return ShoppingCartMapper.INSTANCE.map(shoppingCartOptional.get());
         }
-        throw new RuntimeException("Shopping Cart Doesn't Exists!!!");
+        throw new ShoppingCartNotFoundException("Shopping Cart Does not Exist!!!");
     }
 
     @Override
@@ -65,7 +67,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             shoppingCartRepository.save(shoppingCartEntity);
             log.info("Shopping cart updated!!!!");
         } else {
-            throw new RuntimeException("Shopping Cart Doesn't Exists!!!");
+            throw new ShoppingCartNotFoundException("Shopping Cart Does not Exist!!!");
         }
         return productDto;
     }
@@ -81,9 +83,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 Product matchedProduct = matchingObject.get();
                 return ProductMapper.INSTANCE.map(matchedProduct);
             }
-            throw new RuntimeException("Product Does not exists in cart!!!");
+            throw new ProductNotFoundException("Product Does not Exist!!!");
         }
-        throw new RuntimeException("Shopping Cart Doesn't Exists!!!");
+        throw new ShoppingCartNotFoundException("Shopping Cart Does not Exist!!!");
     }
 
     @Override
@@ -104,8 +106,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 log.info("Product removed from cart : {}", matchedProduct);
                 return ProductMapper.INSTANCE.map(matchedProduct);
             }
-            throw new RuntimeException("Product Does not exists in cart!!!");
+            throw new ProductNotFoundException("Product Does not Exist!!!");
         }
-        throw new RuntimeException("Shopping Cart Doesn't Exists!!!");
+        throw new ShoppingCartNotFoundException("Shopping Cart Does not Exist!!!");
     }
 }
