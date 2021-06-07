@@ -4,6 +4,8 @@ import com.sample.shoppingcart.dto.ProductDTO;
 import com.sample.shoppingcart.dto.ShoppingCartDTO;
 import com.sample.shoppingcart.entity.Product;
 import com.sample.shoppingcart.entity.ShoppingCart;
+import com.sample.shoppingcart.exception.ProductNotFoundException;
+import com.sample.shoppingcart.exception.ShoppingCartNotFoundException;
 import com.sample.shoppingcart.repository.ProductRepository;
 import com.sample.shoppingcart.repository.ShoppingCartRepository;
 import com.sample.shoppingcart.util.TestUtils;
@@ -50,6 +52,13 @@ public class ShoppingCartServiceImplTest {
     }
 
     @Test
+    public void getShoppingCartThrowsExceptionTest() {
+        ShoppingCart shoppingCart = TestUtils.createShoppingCart();
+        Mockito.when(shoppingCartRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(ShoppingCartNotFoundException.class, () -> shoppingCartService.getShoppingCart(1L));
+    }
+
+    @Test
     public void addProductTest() {
         ShoppingCart shoppingCart = TestUtils.createShoppingCart();
         Product product = TestUtils.createProduct();
@@ -65,6 +74,16 @@ public class ShoppingCartServiceImplTest {
     }
 
     @Test
+    public void addProductThrowsExceptionTest() {
+        ShoppingCart shoppingCart = TestUtils.createShoppingCart();
+        Product product = TestUtils.createProduct();
+        ProductDTO productDto = TestUtils.createProductDto();
+
+        Mockito.when(shoppingCartRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(ShoppingCartNotFoundException.class, () -> shoppingCartService.addProduct(1L, productDto));
+    }
+
+    @Test
     public void getProductTest() {
         ProductDTO productDto = TestUtils.createProductDto();
         ShoppingCart shoppingCart = TestUtils.createShoppingCart();
@@ -77,6 +96,26 @@ public class ShoppingCartServiceImplTest {
         Mockito.when(shoppingCartRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(shoppingCart));
         ProductDTO addedProduct = shoppingCartService.getProduct(1L, productDto.getId());
         Assertions.assertEquals(addedProduct.getId(), productDto.getId());
+    }
+
+    @Test
+    public void getProductThrowsProductException() {
+        ProductDTO productDto = TestUtils.createProductDto();
+        ShoppingCart shoppingCart = TestUtils.createShoppingCart();
+        shoppingCart.getProducts().clear();
+
+        Mockito.when(shoppingCartRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(shoppingCart));
+        Assertions.assertThrows(ProductNotFoundException.class, () -> shoppingCartService.getProduct(1L, productDto.getId()));
+    }
+
+    @Test
+    public void getProductThrowsCartException() {
+        ProductDTO productDto = TestUtils.createProductDto();
+        ShoppingCart shoppingCart = TestUtils.createShoppingCart();
+        shoppingCart.getProducts().clear();
+
+        Mockito.when(shoppingCartRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(ShoppingCartNotFoundException.class, () -> shoppingCartService.getProduct(1L, productDto.getId()));
     }
 
     @Test
@@ -101,6 +140,33 @@ public class ShoppingCartServiceImplTest {
         Mockito.doNothing().when(productRepository).deleteById(Mockito.any(UUID.class));
         ProductDTO deletedProductDto = shoppingCartService.deleteProduct(1L, productID);
         Assertions.assertEquals(deletedProductDto.getId(), productID);
+    }
+
+    @Test
+    public void deleteProductThrowProductExceptionTest() {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setId(1L);
+        shoppingCart.setCountryCode("IN");
+        shoppingCart.setCurrency("INR");
+        Product product = new Product();
+        UUID productID = UUID.randomUUID();
+        product.setId(productID);
+        product.setCategory("Menz");
+        product.setDescription("Levis Jeans");
+
+        Set<Product> set = new HashSet();
+        set.add(product);
+
+        shoppingCart.setProducts(set);
+
+        Mockito.when(shoppingCartRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(shoppingCart));
+        Assertions.assertThrows(ProductNotFoundException.class, () -> shoppingCartService.deleteProduct(1L, UUID.randomUUID()));
+    }
+
+    @Test
+    public void deleteProductThrowCartExceptionTest() {
+        Mockito.when(shoppingCartRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(ShoppingCartNotFoundException.class, () -> shoppingCartService.deleteProduct(1L, UUID.randomUUID()));
     }
 
 }
