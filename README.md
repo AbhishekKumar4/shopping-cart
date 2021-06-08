@@ -48,3 +48,4 @@ mvn clean package
 ### Screenshots
 
 ![Image](readme_data/test_coverage.PNG "Test Case Coverage")
+![Image](readme_data/swagger_snapshot.PNG "Swagger")
