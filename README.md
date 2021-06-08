@@ -28,6 +28,9 @@ mvn clean package
 - And coverage report will be generated on this path "target\site\jacoco\index.html"
 - index.html can be opened to see coverage in browser.
 
+#### Swagger
+- Swagger Api documentation can be accessed on url : http://localhost:8080/swagger-ui/
+
 #### Technologies used
 
 * [Java]
