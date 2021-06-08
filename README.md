@@ -6,6 +6,7 @@ For building and running the application you need:
 
 - [JDK 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/windows-info.html)
 - [Maven 3](https://maven.apache.org)
+- [Postgres](https://www.postgresql.org/download/)
 
 ## Development
 - Running the application locally
@@ -35,6 +36,7 @@ mvn clean package
 
 * [Java]
 * [Spring Boot]
+* [Postgres]
 * [MapStruct]
 * [Jacoco]
 * [JUnit]
