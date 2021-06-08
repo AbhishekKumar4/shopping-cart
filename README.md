@@ -12,7 +12,7 @@ For building and running the application you need:
 
 #### Configuring Database
 
-Please create database in postgres and these application.properties before running the app.
+Please create database in postgres and modify these properties in application.properties before running the app.
 ```sh
 spring.datasource.url=jdbc:postgresql://localhost:5432/shopping
 spring.datasource.username=postgres
