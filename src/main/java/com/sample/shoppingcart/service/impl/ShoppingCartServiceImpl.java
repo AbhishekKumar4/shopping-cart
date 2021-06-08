@@ -36,6 +36,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Set<Product> productSet = shoppingCartEntity.getProducts();
         productSet.forEach(productRepository::save);
         ShoppingCart savedEntity = shoppingCartRepository.save(shoppingCartEntity);
+        log.info("Shopping cart saved successfully with cartId = {}", savedEntity.getId());
         return ShoppingCartMapper.INSTANCE.map(shoppingCartEntity);
     }
 
